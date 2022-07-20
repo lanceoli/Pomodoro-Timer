@@ -1,0 +1,133 @@
+package pomodoro;
+
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+//Things to update:
+	/*
+	 * Create mobile app
+	 * Create option that links pc timer to mobile app for notification
+*/
+
+public class pomodoro{
+	
+	int seconds = 0;
+	
+	Timer timer = new Timer();
+	TimerTask task = new TimerTask() {
+	
+	public void run() {
+		seconds++;
+		System.out.println(seconds);
+		//1200
+		if (seconds==1200) {
+			
+			File file = new File("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\1.wav");
+			AudioInputStream audioStream = null;
+			try {
+				audioStream = AudioSystem.getAudioInputStream(file);
+			} catch (UnsupportedAudioFileException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			Clip clip = null;
+			try {
+				clip = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				clip.open(audioStream);
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			clip.start();
+			
+			ImageIcon icon = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Images\\stopu.png");
+			Image img1 = icon.getImage();
+			Image img2 = img1.getScaledInstance(240, 180, java.awt.Image.SCALE_SMOOTH);
+			icon = new ImageIcon(img2);
+			JOptionPane.showMessageDialog(null,"<html><b style =\"font-size:30px;color:red;font-family:Helvetica;\"> STOPU~desu!</b>\nRest for 10 minutes", "Pomodoro Prompt", JOptionPane.PLAIN_MESSAGE, icon);
+						
+			
+		}
+			
+		if (seconds==1500) {
+			
+			File file = new File("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\2.wav");
+			AudioInputStream audioStream = null;
+			try {
+				audioStream = AudioSystem.getAudioInputStream(file);
+			} catch (UnsupportedAudioFileException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			Clip clip = null;
+			try {
+				clip = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				clip.open(audioStream);
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			clip.start();
+			
+			ImageIcon icon2 = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Images\\uhh.png");
+			Image img1 = icon2.getImage();
+			Image img2 = img1.getScaledInstance(341, 191, java.awt.Image.SCALE_SMOOTH);
+			icon2 = new ImageIcon(img2);
+			JOptionPane.showMessageDialog(null,"<html><b style =\"font-size:30px;font-family:Helvetica;\"> Continue~desu</b></html>", "Pomodoro Prompt", JOptionPane.PLAIN_MESSAGE, icon2);			
+		seconds = 0;
+			}		
+		}
+	};
+
+	public void start(){
+		timer.scheduleAtFixedRate(task, 1000, 1000);
+		
+	}
+	
+	public void stopp() {
+		timer.cancel();
+		task.cancel();
+	}
+	
+	
+public static void main(String[] args) {
+	pomodoro Pomodoro = new pomodoro();
+	Pomodoro.start();
+	
+}
+}

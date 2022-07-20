@@ -1,0 +1,553 @@
+package tester;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.border.LineBorder;
+
+public class GUI extends RestTimer implements ActionListener{
+	
+	JButton button;
+	JButton resetButton;
+	JLabel timeLabel;
+	JLabel cycleLabel;
+	
+	RestTimer animation;
+	
+	JLabel countDownLabel;
+	
+	JPanel cyclePanel;
+	
+	RestTimer timerr2;
+	
+	int seconds = 0;
+	
+	int cycle = 1;
+	
+	int elapsedTime = 0;
+	int secondss = 0;
+	int minutes = 0;
+	int hours = 0;
+	boolean started = false;
+	String seconds_string = String.format("%02d", secondss);
+	String minutes_string = String.format("%02d", minutes);
+	String hours_string = String.format("%02d", hours);
+	
+	JFrame frame;
+	
+	public GUI() {
+		frame = new JFrame();
+		timeLabel = new JLabel();
+		timeLabel.setLayout(new BorderLayout(10,10));
+		
+		cycleLabel = new JLabel("Cycle: "+cycle);
+		cycleLabel.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
+		cycleLabel.setBounds(0,0,10,10);
+		cycleLabel.setOpaque(true);
+		cycleLabel.setBackground(new Color(0x222233));
+		cycleLabel.setForeground(new Color(0xAACCFF));
+		
+		cyclePanel = new JPanel();
+		cyclePanel.add(cycleLabel);
+		cyclePanel.setBounds(0,0,10,10);
+		cyclePanel.setOpaque(true);
+		cyclePanel.setBackground(new Color(0x222233));
+		
+		button = new JButton("START");
+		button.addActionListener(this);
+		
+		resetButton = new JButton("Reset");
+		resetButton.addActionListener(this);
+		
+		JPanel panel = new JPanel();
+		//panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+		//panel.setLayout(new GridLayout(0, 1));
+		panel.add(button);
+		
+		frame.add(panel, BorderLayout.CENTER);
+		frame.setSize(420,420);
+	
+		
+		frame.add(button);
+		frame.add(resetButton);
+		frame.add(timeLabel);
+		frame.add(cyclePanel);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Pomodoro Prompt");
+		//frame.pack();
+		frame.setResizable(false);
+		frame.setVisible(true);
+		
+		ImageIcon image = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\a.png");
+		frame.setIconImage(image.getImage());
+		
+		// -------------
+		
+		timeLabel.setText(hours_string+":"+minutes_string+":"+seconds_string);
+		timeLabel.setBounds(100,100,200,100);
+		timeLabel.setFont(new Font("Verdana",Font.PLAIN,35));
+		//timeLabel.setBorder(BorderFactory.createBevelBorder(1));
+		timeLabel.setBackground(new Color(0x222233));
+		timeLabel.setForeground(new Color(0xAACCFF));
+		timeLabel.setOpaque(true);
+		timeLabel.setHorizontalAlignment(JTextField.CENTER);
+		
+		button.setBounds(100,300,100,50);
+		button.setFont(new Font("Verdana", Font.PLAIN, 20));
+		button.setFocusable(false);
+		button.setBackground(new Color(0x222233));
+		button.setForeground(new Color(0xAACCFF));
+
+		
+		resetButton.setBounds(200,300,100,50);
+		resetButton.setFont(new Font("Verdana", Font.PLAIN, 20));
+		resetButton.setFocusable(false);
+		resetButton.setBackground(new Color(0x222233));
+		resetButton.setForeground(new Color(0xAACCFF));
+		
+		
+		}
+	
+	Timer timer = new Timer(1000,new ActionListener() {
+	Timer timer2;		
+		public void actionPerformed(ActionEvent e) {
+			elapsedTime = elapsedTime + 1000;
+			hours = (elapsedTime/3600000);
+			minutes = (elapsedTime/60000) % 60;
+			secondss = (elapsedTime/1000) % 60;
+			seconds_string = String.format("%02d", secondss);
+			minutes_string = String.format("%02d", minutes);
+			hours_string = String.format("%02d", hours);
+			timeLabel.setText(hours_string+":"+minutes_string+":"+seconds_string);
+			
+			try {
+				segs();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+		}
+		
+		public void segs() throws InterruptedException {
+			
+			//1200
+			int segundo = elapsedTime/1000;
+			
+			int x = 1;
+			
+			while(x<elapsedTime) {
+				x++;
+			}
+			
+			
+			// 1200
+			int r = (segundo*x)/5;
+			
+			/*
+			int myInt = (r==x) ? 1:0;
+			
+			switch(myInt) {
+			case 1: egs();
+			break;
+			}
+			
+			
+			System.out.println("x: "+x);
+			System.out.println("r: "+r);
+			System.out.println("seconds: "+segundo/1000);
+			*/
+			
+			if(r==x) {	
+				animation = new RestTimer();
+				frame.add(animation);
+				frame.setVisible(true);	
+			}
+			
+			if(r==x) {
+				
+				timeLabel.setBackground(new Color(0x320d3e));
+				timeLabel.setForeground(new Color(0xd902ee));
+						
+				button.setBackground(new Color(0x320d3e));
+				button.setForeground(new Color(0xf162ff));
+				button.setBorder(new LineBorder(new Color(0xf162ff),1,true));
+						
+				resetButton.setBackground(new Color(0x320d3e));
+				resetButton.setForeground(new Color(0xf162ff));
+				resetButton.setBorder(new LineBorder(new Color(0xf162ff),1,true));
+				
+				cyclePanel.setBackground(new Color(0x320d3e));
+				cyclePanel.setForeground(new Color(0xf162ff));
+				
+				cycleLabel.setBackground(new Color(0x320d3e));
+				cycleLabel.setForeground(new Color(0xf162ff));
+				
+				/*
+				timerr2 = new RestTimer();
+				frame.add(timerr2);
+				frame.setVisible(true);
+				*/
+				
+//				countDownLabel = new JLabel();
+//				countDownLabel.setText(hours_string+":"+minutes_string+":"+seconds_string);
+//				countDownLabel.setBounds(100,100,200,100);
+//				countDownLabel.setFont(new Font("Verdana",Font.PLAIN,35));
+//				//countDownLabel.setBorder(BorderFactory.createBevelBorder(1));
+//				countDownLabel.setBackground(new Color(0x222233));
+//				countDownLabel.setForeground(new Color(0xAACCFF));
+//				countDownLabel.setOpaque(true);
+//				countDownLabel.setHorizontalAlignment(JTextField.CENTER);
+//				
+//				timeLabel.add(countDownLabel);
+//				frame.setVisible(true);
+				
+//				for(int i = 0;i<5;i++) {
+//				int secundo = Integer.valueOf(seconds_string);
+//				secundo--;
+//				seconds_string = String.valueOf(secundo);
+//				}
+
+				
+				
+				
+				
+				File file = new File("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\1.wav");
+				AudioInputStream audioStream = null;
+				try {
+					audioStream = AudioSystem.getAudioInputStream(file);
+				} catch (UnsupportedAudioFileException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				Clip clip = null;
+				try {
+					clip = AudioSystem.getClip();
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					clip.open(audioStream);
+				} catch (LineUnavailableException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				} catch (IOException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				}
+				
+				clip.start();
+				
+				ImageIcon icon = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Images\\stopu.png");
+				Image img1 = icon.getImage();
+				Image img2 = img1.getScaledInstance(240, 180, java.awt.Image.SCALE_SMOOTH);
+				icon = new ImageIcon(img2);
+				
+				JOptionPane.showMessageDialog(null,"<html><b style =\"font-size:30px;color:red;font-family:Helvetica;\"> STOPU~desu!</b>\nRest for 5 minutes", "Pomodoro Prompt", JOptionPane.PLAIN_MESSAGE, icon);
+
+				//timer.stop();
+				
+						
+				timer2 = new Timer(1000,this);
+				timer2.start();
+				/*
+				Thread.currentThread().setPriority(10);
+				System.out.println(timer.isRunning());
+				*/
+				
+				while(timer2.isRunning() && elapsedTime>0) {
+
+				/*
+				int secundo = Integer.valueOf(seconds_string);
+				secundo--;
+				seconds_string = String.valueOf(secundo);
+					
+				int minuto = Integer.valueOf(minutes_string);
+					
+				if(secundo == -1) {
+					secundo = 59;
+						
+					minuto--;
+					minutes_string = String.valueOf(minuto);
+				}
+					
+				if(minuto == -1) {
+					minuto = 59;
+						
+					int hourss = Integer.valueOf(hours_string);
+					hourss--;
+					hours_string = String.valueOf(hourss);
+				}
+				*/
+				System.out.println(secondss);
+				elapsedTime = elapsedTime - 1000;
+				hours = (elapsedTime/3600000);
+				minutes = (elapsedTime/60000) % 60;
+				secondss = (elapsedTime/1000) % 60;
+				/*
+				seconds_string = String.format("%02d", secondss);
+				minutes_string = String.format("%02d", minutes);
+				hours_string = String.format("%02d", hours);
+				timeLabel.setText(hours_string+":"+minutes_string+":"+seconds_string);
+				*/
+				Thread.currentThread();
+				Thread.sleep(1000);
+				}
+				
+				timer2.stop();
+				
+				cycle++;
+				cycleLabel.setText("Cycle: "+cycle);
+				
+				//timeLabel.remove(countDownLabel);
+				
+				animation.timer3.stop();
+				frame.remove(animation);
+				frame.setVisible(true);
+			}
+			
+			
+			/*
+			if(timer.isRunning()==false) {
+				timeLabel.setBackground(new Color(0x320d3e));
+				timeLabel.setForeground(new Color(0xd902ee));
+						
+				button.setBackground(new Color(0x320d3e));
+				button.setForeground(new Color(0xf162ff));
+				button.setBorder(new LineBorder(new Color(0xf162ff),1,true));
+						
+				resetButton.setBackground(new Color(0x320d3e));
+				resetButton.setForeground(new Color(0xf162ff));
+				resetButton.setBorder(new LineBorder(new Color(0xf162ff),1,true));
+			}
+			*/
+				
+			timeLabel.setBackground(new Color(0x222233));
+			timeLabel.setForeground(new Color(0xAACCFF));
+			
+			button.setBackground(new Color(0x222233));
+			button.setForeground(new Color(0xAACCFF));
+			button.setBorder(new LineBorder(new Color(0xAACCFF),1,true));
+			
+			resetButton.setBackground(new Color(0x222233));
+			resetButton.setForeground(new Color(0xAACCFF));
+			resetButton.setBorder(new LineBorder(new Color(0xAACCFF),1,true));
+			
+			cyclePanel.setBackground(new Color(0x222233));
+			cyclePanel.setForeground(new Color(0xAACCFF));
+			
+			cycleLabel.setBackground(new Color(0x222233));
+			cycleLabel.setForeground(new Color(0xAACCFF));
+		
+			//timer.start();
+			
+			//1500
+			int i = 0;
+			
+			while (i<elapsedTime) {
+				i++;
+			}
+			//1500
+//			int s = (segundo*x)/0;
+			int s = 0;
+			
+			if (s==i) {
+				timer.stop();
+				
+				File file = new File("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\2.wav");
+				AudioInputStream audioStream = null;
+				try {
+					audioStream = AudioSystem.getAudioInputStream(file);
+				} catch (UnsupportedAudioFileException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				Clip clip = null;
+				try {
+					clip = AudioSystem.getClip();
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					clip.open(audioStream);
+				} catch (LineUnavailableException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				} catch (IOException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				}
+				
+				clip.start();
+				
+				ImageIcon icon2 = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Images\\uhh.png");
+				Image img1 = icon2.getImage();
+				Image img2 = img1.getScaledInstance(341, 191, java.awt.Image.SCALE_SMOOTH);
+				icon2 = new ImageIcon(img2);
+				JOptionPane.showMessageDialog(null,"<html><b style =\"font-size:30px;font-family:Helvetica;\"> Continue~desu</b></html>", "Pomodoro Prompt", JOptionPane.PLAIN_MESSAGE, icon2);			
+			seconds = 0;
+			
+			//elapsedTime=0;
+			secondss=0;
+			minutes=0;
+			hours=0;
+			int a = Integer.valueOf(seconds_string)+secondss;
+			int b = Integer.valueOf(minutes_string)+minutes;
+			int c = Integer.valueOf(hours_string)+hours;
+			String seconds_stringg = String.format("%02d", a);
+			String minutes_stringg = String.format("%02d", b);
+			String hours_stringg = String.format("%02d", c);
+			timeLabel.setText(hours_stringg+":"+minutes_stringg+":"+seconds_stringg);
+			
+			
+			
+				}
+			timer.start();
+		}
+		
+		public void egs() {
+			File file = new File("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\1.wav");
+			AudioInputStream audioStream = null;
+			try {
+				audioStream = AudioSystem.getAudioInputStream(file);
+			} catch (UnsupportedAudioFileException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			Clip clip = null;
+			try {
+				clip = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				clip.open(audioStream);
+			} catch (LineUnavailableException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			} catch (IOException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			}
+			
+			clip.start();
+			
+			ImageIcon icon = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Images\\stopu.png");
+			Image img1 = icon.getImage();
+			Image img2 = img1.getScaledInstance(240, 180, java.awt.Image.SCALE_SMOOTH);
+			icon = new ImageIcon(img2);
+			JOptionPane.showMessageDialog(null,"<html><b style =\"font-size:30px;color:red;font-family:Helvetica;\"> STOPU~desu!</b>\nRest for 5 minutes", "Pomodoro Prompt", JOptionPane.PLAIN_MESSAGE, icon);
+			
+			
+			
+			
+			}
+		
+		}
+		
+		
+	
+	);
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource()==button) {
+			
+			
+			
+			//pomodoro Pomodoro = new pomodoro();
+			//Pomodoro.start();
+			
+			// 
+			
+			if(started==false) {
+				started=true;
+				button.setText("STOP");
+				startTime();
+				
+			}
+			else {
+				started=false;
+				button.setText("START");
+				stop();
+			}
+			
+		}
+		if(e.getSource()==resetButton) {
+			started=false;
+			button.setText("START");
+			reset();
+		}
+		
+		
+	}
+	
+	// ----------------------------------
+
+
+	void startTime() {
+		timer.start();
+	}
+	
+	void stop() {
+		timer.stop();
+		//System.exit(0);
+	}
+	
+	void reset() {
+		timer.stop();
+		elapsedTime=0;
+		secondss=0;
+		minutes=0;
+		hours=0;
+		seconds_string = String.format("%02d", secondss);
+		minutes_string = String.format("%02d", minutes);
+		hours_string = String.format("%02d", hours);
+		timeLabel.setText(hours_string+":"+minutes_string+":"+seconds_string);
+		
+		cycle = 1;
+		cycleLabel.setText("Cycle: "+cycle);
+		//System.exit(0);
+	}
+	
+	public static void main(String[] args) {
+		new GUI();
+		
+	}
+	
+}
