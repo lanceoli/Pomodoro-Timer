@@ -97,7 +97,7 @@ public class GUI extends RestTimer implements ActionListener{
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		ImageIcon image = new ImageIcon("C:\\Users\\WINDOWS 10\\Documents\\Pomodoro Timer\\a.png");
+		ImageIcon image = new ImageIcon("a.png");
 		frame.setIconImage(image.getImage());
 		
 		// -------------
